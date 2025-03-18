@@ -1,47 +1,37 @@
-iimport streamlit as st
+import streamlit as st
+import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline
-//ez//
-# 🌟 โหลดข้อมูลตัวอย่าง (ใช้ชุดข้อมูล Sentiment Analysis)
-@st.cache_data
-def load_data():
-    data = {
-        "text": [
-            "I love this product, it's amazing!",
-            "This is the worst thing I have ever bought.",
-            "Absolutely fantastic! Highly recommended.",
-            "Terrible quality, I hate it.",
-            "I'm very happy with this purchase.",
-            "Not worth the money, very disappointed.",
-            "Best experience ever, would buy again!",
-            "Horrible, would not recommend.",
-        ],
-        "label": [1, 0, 1, 0, 1, 0, 1, 0]  # 1 = Positive, 0 = Negative
-    }
-    return pd.DataFrame(data)
+from sklearn.naive_bayes import GaussianNB
+from sklearn.datasets import load_iris
 
-df = load_data()
+# โหลดชุดข้อมูล Iris
+iris = load_iris()
+X, y = iris.data, iris.target
+model = GaussianNB()
+model.fit(X, y)  # ฝึกโมเดลล่วงหน้า
 
-# 🌟 สร้างโมเดล Naïve Bayes
-X_train, X_test, y_train, y_test = train_test_split(df["text"], df["label"], test_size=0.2, random_state=42)
+# ตั้งค่าหน้าเว็บ Streamlit
+st.title("Naïve Bayes Classifier - Iris Dataset")
+st.write("ป้อนคุณสมบัติของดอกไม้เพื่อทำนายประเภท")
 
-model = make_pipeline(TfidfVectorizer(), MultinomialNB())
-model.fit(X_train, y_train)
+# รับค่าจากผู้ใช้ผ่าน slider
+sepal_length = st.slider("Sepal Length (cm)", float(X[:,0].min()), float(X[:,0].max()), float(X[:,0].mean()))
+sepal_width = st.slider("Sepal Width (cm)", float(X[:,1].min()), float(X[:,1].max()), float(X[:,1].mean()))
+petal_length = st.slider("Petal Length (cm)", float(X[:,2].min()), float(X[:,2].max()), float(X[:,2].mean()))
+petal_width = st.slider("Petal Width (cm)", float(X[:,3].min()), float(X[:,3].max()), float(X[:,3].mean()))
 
-# 🌟 อินเทอร์เฟซของ Streamlit
-st.title("📢 Sentiment Analysis with Naïve Bayes")
-st.write("ใส่ข้อความเพื่อดูว่ามีอารมณ์เชิงบวกหรือเชิงลบ")
+# สร้างอาร์เรย์ข้อมูลจากค่าที่ป้อน
+input_data = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
 
-# รับอินพุตจากผู้ใช้
-user_input = st.text_area("💬 ป้อนข้อความที่ต้องการวิเคราะห์")
+# ทำนายผลลัพธ์
+prediction = model.predict(input_data)
+prediction_proba = model.predict_proba(input_data)
 
-if user_input:
-    prediction = model.predict([user_input])[0]
-    sentiment = "😊 Positive" if prediction == 1 else "😡 Negative"
-    st.subheader(f"🔍 ผลลัพธ์: {sentiment}")
+# แสดงผลลัพธ์
+st.subheader("ผลลัพธ์ที่ได้:")
+st.write(f"ชนิดของดอกไม้ที่คาดการณ์: *{iris.target_names[prediction[0]]}*")
 
-st.markdown("---")
-st.write("🔹 โมเดลนี้ใช้ Naïve Bayes และ TF-IDF Vectorizer สำหรับการวิเคราะห์ข้อความ")
+# แสดงความน่าจะเป็นของแต่ละคลาส
+st.subheader("ความน่าจะเป็นของแต่ละประเภท:")
+df_proba = pd.DataFrame(prediction_proba, columns=iris.target_names)
+st.dataframe(df_proba.style.format("{:.2%}"))
