@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
-from sklearn.datasets import load_iris
 
 # โหลดชุดข้อมูล Heart
 Heart = pd.read_csv('./data/heart.csv')
@@ -14,10 +13,11 @@ model = GaussianNB()
 model.fit(X, y)  # ฝึกโมเดลล่วงหน้า
 
 # ตั้งค่าหน้าเว็บ Streamlit
-st.title("Naïve Bayes Classifier - Iris Dataset")
+st.title("Naïve Bayes Classifier - โรคหัวใจ")
 st.write("ป้อนคุณสมบัติของดอกไม้เพื่อทำนายประเภท")
 
 # รับค่าจากผู้ใช้ผ่าน slider
+
  A1 = st.number_input("ข้อมูล1")
  A2 = st.number_input("ข้อมูล2")
  A3 = st.number_input("ข้อมูล3")
@@ -37,8 +37,6 @@ input_data = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11]])
 # ทำนายผลลัพธ์
 prediction = model.predict(input_data)
 prediction_proba = model.predict_proba(input_data)
-
-
 
 
 # แสดงผลลัพธ์
