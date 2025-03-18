@@ -17,17 +17,17 @@ st.title("Naïve Bayes Classifier - โรคหัวใจ")
 st.write("ป้อนคุณสมบัติของดอกไม้เพื่อทำนายประเภท")
 
 # รับค่าจากผู้ใช้ผ่าน slider
- A1= st.number_input("อายุ")
- A2= st.number_input("ชาย = 1 หญิง = 0")
- A3= st.number_input("ข้อมูล3")
- A4= st.number_input("ข้อมูล4")
- A5= st.number_input("ข้อมูล5")
- A6= st.number_input("ข้อมูล6")
- A7= st.number_input("ข้อมูล7")
- A8= st.number_input("ข้อมูล8")
- A9= st.number_input("ข้อมูล9")
- A10= st.number_input("ข้อมูล10")
- A11= st.number_input("ข้อมูล11")
+A1= st.number_input("อายุ")
+A2= st.number_input("ชาย = 1 หญิง = 0")
+A3= st.number_input("ข้อมูล3")
+A4= st.number_input("ข้อมูล4")
+A5= st.number_input("ข้อมูล5")
+A6= st.number_input("ข้อมูล6")
+A7= st.number_input("ข้อมูล7")
+A8= st.number_input("ข้อมูล8")
+A9= st.number_input("ข้อมูล9")
+A10= st.number_input("ข้อมูล10")
+A11= st.number_input("ข้อมูล11")
 
 
 # สร้างอาร์เรย์ข้อมูลจากค่าที่ป้อน
