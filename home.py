@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-
+//ez//
 # 🌟 โหลดข้อมูลตัวอย่าง (ใช้ชุดข้อมูล Sentiment Analysis)
 @st.cache_data
 def load_data():
