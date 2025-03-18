@@ -4,9 +4,12 @@ import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn.datasets import load_iris
 
-# โหลดชุดข้อมูล Iris
-iris = load_iris()
-X, y = iris.data, iris.target
+# โหลดชุดข้อมูล Heart
+Heart = pd.read_csv('./data/heart3.csv')
+X = Heart.drop(columns=['HeartDisease'])
+y = Heart.HeartDisease
+
+
 model = GaussianNB()
 model.fit(X, y)  # ฝึกโมเดลล่วงหน้า
 
