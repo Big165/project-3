@@ -1,37 +1,47 @@
-import streamlit as st
+iimport streamlit as st
 import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
 
-st.title("🐷🐷🐷Website Developing using Python🐷🐷")
-st.header("🍖🍖Website Developing using Python🍖🍖")
+# 🌟 โหลดข้อมูลตัวอย่าง (ใช้ชุดข้อมูล Sentiment Analysis)
+@st.cache_data
+def load_data():
+    data = {
+        "text": [
+            "I love this product, it's amazing!",
+            "This is the worst thing I have ever bought.",
+            "Absolutely fantastic! Highly recommended.",
+            "Terrible quality, I hate it.",
+            "I'm very happy with this purchase.",
+            "Not worth the money, very disappointed.",
+            "Best experience ever, would buy again!",
+            "Horrible, would not recommend.",
+        ],
+        "label": [1, 0, 1, 0, 1, 0, 1, 0]  # 1 = Positive, 0 = Negative
+    }
+    return pd.DataFrame(data)
 
-st.image('./ing/Dog.jpg')
-st.subheader("นายวงศกร สุขขันติราษฎร์")
+df = load_data()
 
-col1, col2, col3 = st.columns(3)
+# 🌟 สร้างโมเดล Naïve Bayes
+X_train, X_test, y_train, y_test = train_test_split(df["text"], df["label"], test_size=0.2, random_state=42)
 
-with col1:
-        st.header("black")
-        st.image("./ing/black.jpg")
+model = make_pipeline(TfidfVectorizer(), MultinomialNB())
+model.fit(X_train, y_train)
 
-with col2:
-        st.header("white")
-        st.image("./ing/white.jpg")
+# 🌟 อินเทอร์เฟซของ Streamlit
+st.title("📢 Sentiment Analysis with Naïve Bayes")
+st.write("ใส่ข้อความเพื่อดูว่ามีอารมณ์เชิงบวกหรือเชิงลบ")
 
-with col3:
-        st.header("yellow")
-        st.image("./ing/yellow.jpg")
+# รับอินพุตจากผู้ใช้
+user_input = st.text_area("💬 ป้อนข้อความที่ต้องการวิเคราะห์")
 
-html_7 = """
-<div style="background-color:#EC7063;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
-<center><h5>ชนเผ่ามนุษย์</h5></center>
-</div>
-"""
-st.markdown(html_7, unsafe_allow_html=True)
-st.markdown("")
-st.markdown("")
-st.subheader("ข้อมูลส่วนแรก 10 แถว")
-dt = pd.read_csv("./data/iris-3.csv")
-st.write(dt.head(10))
-st.subheader("ข้อมูลส่วนแรก 10 แถว")
-dt = pd.read_csv("./data/iris-3.csv")
-st.write(dt.head(10))
+if user_input:
+    prediction = model.predict([user_input])[0]
+    sentiment = "😊 Positive" if prediction == 1 else "😡 Negative"
+    st.subheader(f"🔍 ผลลัพธ์: {sentiment}")
+
+st.markdown("---")
+st.write("🔹 โมเดลนี้ใช้ Naïve Bayes และ TF-IDF Vectorizer สำหรับการวิเคราะห์ข้อความ")
