@@ -14,7 +14,7 @@ model.fit(X, y)  # ฝึกโมเดลล่วงหน้า
 
 # ตั้งค่าหน้าเว็บ Streamlit
 st.title("Naïve Bayes Classifier - โรคหัวใจ")
-st.write("ป้อนคุณสมบัติของดอกไม้เพื่อทำนายประเภท")
+st.write("โรคหัวใจ")
 
 # รับค่าจากผู้ใช้ผ่าน slider
 A1= st.number_input("อายุ")
